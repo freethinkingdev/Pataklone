@@ -3,9 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <title>PataKlone</title>
+    <link type="text/css" rel="stylesheet" href="assets/css/pataKlone.css" />
+
     <script type="text/javascript" src="assets/js/lib/paper-full.js"></script>
+    <script type="text/paperscript" canvas="mainCanvas">
+        // Create a Paper.js Path to draw a line into it:
+        var path = new Path();
+        // Give the stroke a color
+        path.strokeColor = 'deeppink';
+        var start = new Point(100, 100);
+        // Move to start and draw a line from there
+        path.moveTo(start);
+        // Note the plus operator on Point objects.
+        // PaperScript does that for us, and much more!
+        path.lineTo(start + [ 100, -50 ]);
+
+        var noweKolko = new Path.Circle(new Point(100,300), 30);
+        noweKolko.fillColor = 'deeppink';
+
+
+    </script>
 </head>
 <body>
-
+    <canvas id="mainCanvas" resize></canvas>
 </body>
 </html>
