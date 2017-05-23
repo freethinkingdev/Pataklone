@@ -6,9 +6,121 @@
     <link type="text/css" rel="stylesheet" href="assets/css/pataKlone.css" />
 
     <script type="text/javascript" src="assets/js/lib/paper-full.js"></script>
-    <script type="text/paperscript" canvas="mainCanvas">
+    <script type="text/javascript" src="assets/js/lib/howler.js"></script>
+    <script type="text/javascript">
 
-        var myCircle;
+
+        var dataKeyForTheApp = {
+            a: {
+                color: "deeppink",
+                sound: new Howl({src: ['assets/sounds/bubbles.mp3']})
+            },
+            b: {
+                color: "blue",
+                sound: new Howl({src: ['assets/sounds/clay.mp3']})
+            },
+            c: {
+                color: "red",
+                sound: new Howl({src: ['assets/sounds/confetti.mp3']})
+            },
+            d: {
+                color: "yellow",
+                sound: new Howl({src: ['assets/sounds/corona.mp3']})
+            },
+            e: {
+                color: "green",
+                sound: new Howl({src: ['assets/sounds/dotted-spiral.mp3']})
+            },
+            f: {
+                color: "purple",
+                sound: new Howl({src: ['assets/sounds/flash-1.mp3']})
+            },
+            g: {
+                color: "pink",
+                sound: new Howl({src: ['assets/sounds/flash-2.mp3']})
+            },
+            h: {
+                color: "white",
+                sound: new Howl({src: ['assets/sounds/flash-3.mp3']})
+            },
+            i: {
+                color: "grey",
+                sound: new Howl({src: ['assets/sounds/glimmer.mp3']})
+            },
+            j: {
+                color: "lime",
+                sound: new Howl({src: ['assets/sounds/moon.mp3']})
+            },
+            k: {
+                color: "maroon",
+                sound: new Howl({src: ['assets/sounds/pinwheel.mp3']})
+            },
+            l: {
+                color: "olive",
+                sound: new Howl({src: ['assets/sounds/piston-1.mp3']})
+            },
+            m: {
+                color: "teal",
+                sound: new Howl({src: ['assets/sounds/piston-2.mp3']})
+            },
+            n: {
+                color: "navy",
+                sound: new Howl({src: ['assets/sounds/piston-3.mp3']})
+            },
+            o: {
+                color: "orange",
+                sound: new Howl({src: ['assets/sounds/prism-1.mp3']})
+            },
+            p: {
+                color: "magenta",
+                sound: new Howl({src: ['assets/sounds/prism-2.mp3']})
+            },
+            q: {
+                color: "sienna",
+                sound: new Howl({src: ['assets/sounds/prism-3.mp3']})
+            },
+            r: {
+                color: "tan",
+                sound: new Howl({src: ['assets/sounds/splits.mp3']})
+            },
+            s: {
+                color: "rgb(129, 25, 251)",
+                sound: new Howl({src: ['assets/sounds/squiggle.mp3']})
+            },
+            t: {
+                color: "RGB(75, 66, 39)",
+                sound: new Howl({src: ['assets/sounds/strike.mp3']})
+            },
+            u: {
+                color: "RGB(103, 153, 76)",
+                sound: new Howl({src: ['assets/sounds/suspension.mp3']})
+            },
+            v: {
+                color: "RGB(50, 137, 37)",
+                sound: new Howl({src: ['assets/sounds/timer.mp3']})
+            },
+            w: {
+                color: "RGB(66, 49, 184)",
+                sound: new Howl({src: ['assets/sounds/ufo.mp3']})
+            },
+            x: {
+                color: "RGB(146, 3, 82)",
+                sound: new Howl({src: ['assets/sounds/veil.mp3']})
+            },
+            y: {
+                color: "RGB(101, 97, 230)",
+                sound: new Howl({src: ['assets/sounds/wipe.mp3']})
+            },
+            z: {
+                color: "RGB(85, 17, 102)",
+                sound: new Howl({src: ['assets/sounds/zig-zag.mp3']})
+            }
+        }
+
+
+    </script>
+    <script type="text/paperscript" canvas="mainCanvas">
+        var arrayOfCircles = [];
         // Create a centered text item at the center of the view:
         var text = new PointText({
             point: view.center,
@@ -18,25 +130,33 @@
         });
 
         function onKeyDown(event) {
-            // When a key is pressed, set the content of the text item:
-            var maxPoint = new Point(view.size.width, view.size.height);
-            var randomPoint = Point.random();
-            var randomNumber = Math.floor(Math.random()*100);
-            var newPoint = maxPoint * randomPoint;
+        if(dataKeyForTheApp[event.key]){
+                dataKeyForTheApp[event.key].sound.play();
+                // When a key is pressed, set the content of the text item:
+                var maxPoint = new Point(view.size.width, view.size.height);
+                var randomPoint = Point.random();
+                var randomNumber = Math.floor(Math.random()*100)*5;
+                var newPoint = maxPoint * randomPoint;
 
-            var myCircle = new Path.Circle(new Point(newPoint, maxPoint), randomNumber).fillColor = 'deeppink';
-
-
+                var myCircle = new Path.Rectangle(new Point(newPoint, maxPoint), randomNumber);
+                myCircle.fillColor = dataKeyForTheApp[event.key].color;
+                arrayOfCircles.push(myCircle);
+            }
         }
 
-        function onKeyUp(event) {
-            // When a key is released, set the content of the text item:
-            text.content = 'The ' + event.key + ' key was released!';
+        function onFrame(event){
+            for(var i=0; i< arrayOfCircles.length;i++){
+                arrayOfCircles[i].fillColor.hue +=1;
+                arrayOfCircles[i].scale(.93);
+                if(arrayOfCircles[i].area < 1) {
+                    //console.log("as");
+                }
+            }
         }
-
 
 
     </script>
+
 </head>
 <body>
     <canvas id="mainCanvas" resize></canvas>
